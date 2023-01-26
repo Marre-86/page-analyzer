@@ -1,6 +1,7 @@
 PORT ?= 8000
+RT ?= 8000
 start:
-	php -S 0.0.0.0:$(PORT) -t public public/index.php
+	PHP_CLI_SERVER_WORKERS=5 php -S 0.0.0.0:$(PORT) 	-t public
 install:
 	composer install
 validate:
