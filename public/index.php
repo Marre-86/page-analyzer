@@ -21,7 +21,18 @@ try {
     if (!Misc\tableExists($pdo, "urls")) {
 //        $pdo->exec("TRUNCATE urls");
 //    } else {
-        $pdo->exec("CREATE TABLE urls (id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY, name varchar(255), created_at timestamp)"); // phpcs:ignore
+        $pdo->exec("CREATE TABLE urls (id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                       name varchar(255),
+                                       created_at timestamp)");
+    }
+    if (!Misc\tableExists($pdo, "url_checks")) {
+        $pdo->exec("CREATE TABLE url_checks (id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                                             url_id bigint REFERENCES urls (id),
+                                             status_code smallint,
+                                             h1 varchar(255),
+                                             title varchar(255),
+                                             description text,
+                                             created_at timestamp)");
     }
 //    $pdo->exec("CREATE TABLE foxes (name varchar, slug varchar);");
 //    echo 'An instance of database connection has been created successfully.<br>';
@@ -55,11 +66,24 @@ $app->get('/', function ($request, $response) {
     $params = ['greeting' => 'Путин хуйло'];
     return $this->get('renderer')->render($response, 'main.phtml', $params);
 });
+
+$app->post('/urls/{url_id}/checks', function ($request, $response, array $args) use ($router) {
+    $check['url_id'] = $args['url_id'];
+    $check['date'] = date('Y-m-d H:i:s');
+    try {
+        $pdo = Connection::get()->connect();
+        $query = new Query($pdo, 'url_checks');
+        $newId = $query->insertValuesChecks($check['url_id'], $check['date']);
+    } catch (\PDOException $e) {
+        echo $e->getMessage();
+    }
+    $this->get('flash')->addMessage('success', 'Страница успешно проверена');
+    return $response->withRedirect($router->urlFor('show_url_info', ['id' => $args['url_id']]), 302);
+});
+
 // 4
 $app->post('/urls', function ($request, $response) use ($router) {
     $url = $request->getParsedBodyParam('url');
-    $cookies = json_decode($request->getCookieParam('cookie', json_encode([])), true);
-    $url['id'] = uniqid();
     $url['date'] = date('Y-m-d H:i:s');
     $errors = [];
     if (filter_var($url['name'], FILTER_VALIDATE_URL) === false) {
@@ -83,7 +107,6 @@ $app->post('/urls', function ($request, $response) use ($router) {
                 $pdo = Connection::get()->connect();
                 $query = new Query($pdo, 'urls');
                 $newId = $query->insertValues($url['name'], $url['date']);
-                echo $newId;
             } catch (\PDOException $e) {
                 echo $e->getMessage();
             }
@@ -108,8 +131,9 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
     if (!isset($urlFound)) {
         return $response->withStatus(404);
     }
+    $checks = $pdo->query("SELECT * FROM url_checks WHERE url_id = {$args['id']}")->fetchAll(\PDO::FETCH_ASSOC);
     $flashes = $this->get('flash')->getMessages();
-    $params = ['url' => $urlFound, 'flash' => $flashes];
+    $params = ['url' => $urlFound, 'checks' => $checks, 'flash' => $flashes];
     return $this->get('renderer')->render($response, 'show.phtml', $params);
 })->setName('show_url_info');
 // 1 index
