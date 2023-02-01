@@ -24,8 +24,11 @@
         </nav>
 </header>
 
-  <?php if ($flash) : ?>
+  <?php if ($flash['success']) : ?>
     <div class="alert alert-success" role="alert"><?= $flash['success'][0] ?></div>
+  <?php endif; ?>
+  <?php if ($flash['failure']) : ?>
+    <div class="alert alert-danger" role="alert"><?= $flash['failure'][0] ?></div>
   <?php endif; ?>
 
   <main class="flex-grow-1">
@@ -66,7 +69,7 @@
                 <?php foreach ($checks as $check) : ?>
                          <tr>
                           <td><?= $check['id'] ?></td>
-                          <td></td>
+                          <td><?= $check['status_code'] ?? '' ?></td>
                           <td></td>
                           <td></td>
                           <td></td>

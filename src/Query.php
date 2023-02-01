@@ -32,13 +32,13 @@ class Query
         // возврат полученного значения id
         return $this->pdo->lastInsertId();
     }
-    public function insertValuesChecks($url_id, $created_at)
+    public function insertValuesChecks($url_id, $created_at, $status_code)
     {
         // подготовка запроса для добавления данных
-        $sql = 'INSERT INTO url_checks(url_id, created_at) VALUES(:url_id, :created_at)';
+        $sql = 'INSERT INTO url_checks(url_id, status_code, created_at) VALUES(:url_id, :status_code, :created_at)';
             $stmt = $this->pdo->prepare($sql);
-
             $stmt->bindValue(':url_id', $url_id);
+            $stmt->bindValue(':status_code', $status_code ?? null);
             $stmt->bindValue(':created_at', $created_at);
             $stmt->execute();
 

@@ -39,8 +39,8 @@
                          <tr>
                           <td><?= $url['id'] ?></td>
                           <td><a href="/urls/<?= $url['id'] ?>"><?= $url['name'] ?></a></td>
-                          <td></td>
-                          <td></td>
+                          <td><?= $url['last_check_time'] ?></td>
+                          <td><?= $url['status_code'] ?></td>
                          </tr>
                          <?php endforeach; ?>
                        </tbody>
