@@ -151,7 +151,7 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
 
 // 1 index
 $app->get('/urls', function ($request, $response) {
-    $databaseUrl = parse_url($_ENV['DATABASE_URL']);
+    $databaseUrl = parse_url(getenv('DATABASE_URL'));
     $pdo = Connection::get()->connect();
     $allUrls = $pdo->query("SELECT * FROM urls")->fetchAll(\PDO::FETCH_ASSOC);
     $recentChecks = $pdo->query("SELECT DISTINCT ON (url_id) url_id, created_at, status_code
