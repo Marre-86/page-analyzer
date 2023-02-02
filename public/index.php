@@ -151,6 +151,7 @@ $app->get('/urls/{id}', function ($request, $response, $args) {
 
 // 1 index
 $app->get('/urls', function ($request, $response) {
+    $databaseUrl = parse_url($_ENV['DATABASE_URL']);
     $pdo = Connection::get()->connect();
     $allUrls = $pdo->query("SELECT * FROM urls")->fetchAll(\PDO::FETCH_ASSOC);
     $recentChecks = $pdo->query("SELECT DISTINCT ON (url_id) url_id, created_at, status_code
@@ -166,7 +167,7 @@ $app->get('/urls', function ($request, $response) {
         return $url;
     }, $allUrls);
     $params = ['urls' => array_reverse($combined)];
-    return $this->get('renderer')->render($response, 'list.phtml', $params);
+    return $response->write("r" . json_encode($databaseUrl));
 })->setName('list');
 
 $app->run();
