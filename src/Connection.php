@@ -22,7 +22,6 @@ class Connection
     {
         // чтение параметров в файле конфигурации ini
         $databaseUrl = parse_url(getenv('DATABASE_URL'));
-        print_r($databaseUrl);
         if ($databaseUrl) {
             $params['host'] = $databaseUrl['host'];
             $params['port'] = $databaseUrl['port'];

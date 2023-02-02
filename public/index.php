@@ -12,6 +12,8 @@ use Hexlet\Code\Misc;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
 
+session_start();
+
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
 }
@@ -46,8 +48,6 @@ try {
 } catch (\PDOException $e) {
     echo $e->getMessage();
 }
-
-session_start();
 
 $container = new Container();
 $container->set('renderer', function () {
