@@ -24,10 +24,10 @@
         </nav>
 </header>
 
-  <?php if ($flash['success']) : ?>
+  <?php if (isset($flash['success'])) : ?>
     <div class="alert alert-success" role="alert"><?= $flash['success'][0] ?></div>
   <?php endif; ?>
-  <?php if ($flash['failure']) : ?>
+  <?php if (isset($flash['failure'])) : ?>
     <div class="alert alert-danger" role="alert"><?= $flash['failure'][0] ?></div>
   <?php endif; ?>
 
