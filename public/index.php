@@ -11,6 +11,7 @@ use Hexlet\Code\Query;
 use Hexlet\Code\Misc;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\TransferException;
+use DiDom\Document;
 
 session_start();
 
@@ -81,10 +82,23 @@ $app->post('/urls/{url_id}/checks', function ($request, $response, array $args) 
     } catch (TransferException $e) {
         $this->get('flash')->addMessage('failure', 'Произошла ошибка при проверке, не удалось подключиться');
     }
+    $document = new Document($checkedUrl, true);
+    if ($document->has('h1')) {
+        $h1 = $document->find('h1');
+        $check['h1'] = $h1[0]->text();
+    }
+    if ($document->has('title')) {
+        $title = $document->find('title');
+        $check['title'] = $title[0]->text();
+    }
+    if ($document->has('meta[name=description]')) {
+        $desc = $document->find('meta[name=description]');
+        $check['description'] = $desc[0]->getAttribute('content');
+    }
     if ($check['status_code']) {
         try {
             $query = new Query($pdo, 'url_checks');
-            $newId = $query->insertValuesChecks($check['url_id'], $check['date'], $check['status_code']);
+            $newId = $query->insertValuesChecks($check);
         } catch (\PDOException $e) {
             echo $e->getMessage();
         }

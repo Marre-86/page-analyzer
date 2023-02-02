@@ -20,7 +20,6 @@ class Connection
      */
     public function connect()
     {
-        // чтение параметров в файле конфигурации ini
         $databaseUrl = parse_url(getenv('DATABASE_URL'));
         if ($databaseUrl) {
             $params['host'] = $databaseUrl['host'];
