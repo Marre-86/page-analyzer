@@ -15,17 +15,25 @@ use DiDom\Document;
 
 session_start();
 
+if (!isset($_SESSION['start']))
+{
+    $pdo = Connection::get()->connect();
+    if (Misc\tableExists($pdo, "url_checks")) {
+        $pdo->exec("TRUNCATE url_checks");
+    }
+    if (Misc\tableExists($pdo, "urls")) {
+        $pdo->exec("TRUNCATE urls CASCADE");
+    }
+    $_SESSION['start'] = true;
+}
+
 if (PHP_SAPI === 'cli-server' && $_SERVER['SCRIPT_FILENAME'] !== __FILE__) {
     return false;
 }
 
 try {
-//    Connection::get()->connect();
-//    echo 'A connection to the PostgreSQL database sever has been established successfully.<br>';
     $pdo = Connection::get()->connect();
     if (!Misc\tableExists($pdo, "urls")) {
-//        $pdo->exec("TRUNCATE urls");
-//    } else {
         $pdo->exec("CREATE TABLE urls (id bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
                                        name varchar(255),
                                        created_at timestamp)");
@@ -39,13 +47,6 @@ try {
                                              description text,
                                              created_at timestamp)");
     }
-//    $pdo->exec("CREATE TABLE foxes (name varchar, slug varchar);");
-//    echo 'An instance of database connection has been created successfully.<br>';
-//    echo 'A table has been created successfully.';
-//    $pdo->exec("INSERT INTO foxes VALUES ('black fox', 'bf'), ('red fox', 'rf'), ('iridescent fox', 'if');");
-//    $query = new Query($pdo, 'foxes');
-//    $query->insertValues('diamond fox', 'df');
-//    print_r($pdo->query("SELECT * FROM foxes;")->fetchAll(\PDO::FETCH_ASSOC));
 } catch (\PDOException $e) {
     echo $e->getMessage();
 }
