@@ -1,8 +1,8 @@
-#PORT ?= 8000
-#start:
-#	PHP_CLI_SERVER_WORKERS=5 php -S 0.0.0.0:$(PORT)  -t public
+PORT ?= 8000
 start:
-	php -S localhost:8081 -t public public/index.php
+	PHP_CLI_SERVER_WORKERS=5 php -S 0.0.0.0:$(PORT)  -t public
+#start:
+#	php -S localhost:8081 -t public public/index.php
 install:
 	composer install
 validate:
