@@ -15,8 +15,7 @@ use DiDom\Document;
 
 session_start();
 
-if (!isset($_SESSION['start']))
-{
+if (!isset($_SESSION['start'])) {
     $pdo = Connection::get()->connect();
     if (Misc\tableExists($pdo, "url_checks")) {
         $pdo->exec("TRUNCATE url_checks");

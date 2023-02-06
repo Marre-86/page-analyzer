@@ -42,7 +42,7 @@ class Query
             $stmt->bindValue(':status_code', $check['status_code'] ?? null);
             $stmt->bindValue(':h1', $check['h1'] ?? null);
             $stmt->bindValue(':title', $check['title'] ?? null);
-            $stmt->bindValue(':description', $check['description'] ?? null);            
+            $stmt->bindValue(':description', $check['description'] ?? null);
             $stmt->bindValue(':created_at', $check['date']);
             $stmt->execute();
 
