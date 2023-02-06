@@ -15,8 +15,6 @@ use DiDom\Document;
 
 session_start();
 
-phpinfo();
-
 if (!isset($_SESSION['start']))
 {
     $pdo = Connection::get()->connect();
