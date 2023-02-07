@@ -143,7 +143,7 @@ $app->post('/urls', function ($request, $response) use ($router) {
         return $response->withRedirect($router->urlFor('show_url_info', ['id' => $idFound ?? $newId]), 302);
     }
     $params = ['url' => $url, 'errors' => $errors];
-    return $this->get('renderer')->render($response, "main.phtml", $params);
+    return $this->get('renderer')->render($response->withStatus(422), "main.phtml", $params);
 });
 // 2 show
 $app->get('/urls/{id}', function ($request, $response, $args) {
