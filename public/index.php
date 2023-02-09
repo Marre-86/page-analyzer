@@ -84,18 +84,22 @@ $app->post('/urls/{url_id}/checks', function ($request, $response, array $args) 
     }
     $document = new Document($checkedUrl, true);
     if ($document->has('h1')) {
-        $h1 = $document->find('h1');
-        $check['h1'] = $h1[0]->text();
+        $h1 = $document->first('h1');
+        if ($h1 !== null) {
+            $check['h1'] = $h1->text();
+        }
     }
     if ($document->has('title')) {
-        $title = $document->find('title');
-        $check['title'] = $title[0]->text();
+        $title = $document->first('title');
+        if ($h1 !== null) {
+            $check['title'] = $title->text();
+        }
     }
     if ($document->has('meta[name=description]')) {
-        $desc = $document->find('meta[name=description]');
-        $check['description'] = $desc[0]->getAttribute('content');
+        $desc = $document->first('meta[name=description]');
+        $check['description'] = $desc->getAttribute('content');
     }
-    if ($check['status_code']) {
+    if (isset($check['status_code'])) {
         try {
             $query = new Query($pdo, 'url_checks');
             $newId = $query->insertValuesChecks($check);
