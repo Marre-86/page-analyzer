@@ -29,7 +29,8 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v3
         with:
-          path: test-results
+          name: screenshot
+          path: test-results/10-application-url-is-invalid-chromium/test-failed-1.png
       - name: Download all workflow run artifacts
         if: always()
         uses: actions/download-artifact@v3
