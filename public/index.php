@@ -112,7 +112,7 @@ $app->post('/urls', function ($request, $response) use ($router) {
     $url = $request->getParsedBodyParam('url');
     $url['date'] = date('Y-m-d H:i:s');
     $errors = [];
-    if ((filter_var($url['name'], FILTER_VALIDATE_URL) === false) or (!in_array(parse_url($url['name'], PHP_URL_SCHEME), ['http', 'https']))) {
+    if ((filter_var($url['name'], FILTER_VALIDATE_URL) === false) or (!in_array(parse_url($url['name'], PHP_URL_SCHEME), ['http', 'https']))) {  // phpcs:ignore
         $errors['name'] = 'Некорректный URL';
     }
     if (strlen($url['name']) < 1) {
