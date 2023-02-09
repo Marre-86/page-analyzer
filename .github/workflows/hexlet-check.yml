@@ -28,6 +28,8 @@ jobs:
       - name: Upload all workflow run artifacts
         if: always()
         uses: actions/upload-artifact@v3
+        with:
+          path: test-results
       - name: Download all workflow run artifacts
         if: always()
         uses: actions/download-artifact@v3
