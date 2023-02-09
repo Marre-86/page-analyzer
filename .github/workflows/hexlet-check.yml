@@ -26,5 +26,6 @@ jobs:
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
       - name: Download all workflow run artifacts
+        if: always()
         uses: actions/download-artifact@v3
 
