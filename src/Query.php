@@ -4,25 +4,18 @@ namespace Hexlet\Code;
 
 class Query
 {
-    private $pdo;
-    private $table;
-    private $data = [
-        'select' => '*',
-        'where' => []
-    ];
+    private \PDO $pdo;
+    private string $table;
 
-    public function __construct($pdo, $table, $data = null)
+    public function __construct(\PDO $pdo, string $table)
     {
         $this->pdo = $pdo;
         $this->table = $table;
-        if ($data) {
-            $this->data = $data;
-        }
     }
-    public function insertValues($name, $created_at)
+    public function insertValues(string $name, string $created_at)
     {
         // подготовка запроса для добавления данных
-        $sql = 'INSERT INTO urls(name, created_at) VALUES(:name, :created_at)';
+        $sql = "INSERT INTO {$this->table}(name, created_at) VALUES(:name, :created_at)";
             $stmt = $this->pdo->prepare($sql);
 
             $stmt->bindValue(':name', $name);
@@ -32,11 +25,11 @@ class Query
         // возврат полученного значения id
         return $this->pdo->lastInsertId();
     }
-    public function insertValuesChecks($check)
+    public function insertValuesChecks(array $check)
     {
         // подготовка запроса для добавления данных
-        $sql = 'INSERT INTO url_checks(url_id, status_code, h1, title, description, created_at)
-                VALUES(:url_id, :status_code, :h1, :title, :description, :created_at)';
+        $sql = "INSERT INTO {$this->table}(url_id, status_code, h1, title, description, created_at)
+                VALUES(:url_id, :status_code, :h1, :title, :description, :created_at)";
             $stmt = $this->pdo->prepare($sql);
             $stmt->bindValue(':url_id', $check['url_id']);
             $stmt->bindValue(':status_code', $check['status_code'] ?? null);

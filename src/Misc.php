@@ -2,7 +2,7 @@
 
 namespace Hexlet\Code\Misc;
 
-function tableExists($pdo, $table)
+function tableExists(\PDO $pdo, string $table)
 {
 
     // Try a select statement against the table
