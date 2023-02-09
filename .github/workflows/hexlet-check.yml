@@ -25,6 +25,9 @@ jobs:
         uses: hexlet/project-action@release
         with:
           hexlet-id: ${{ secrets.HEXLET_ID }}
+      - name: Upload all workflow run artifacts
+        if: always()
+        uses: actions/upload-artifact@v3
       - name: Download all workflow run artifacts
         if: always()
         uses: actions/download-artifact@v3
