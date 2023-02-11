@@ -91,7 +91,7 @@ $app->post('/urls/{url_id}/checks', function ($request, $response, array $args) 
     }
     if ($document->has('title')) {
         $title = $document->first('title');
-        if ($h1 !== null) {
+        if ($title !== null) {
             $check['title'] = $title->text();
         }
     }
