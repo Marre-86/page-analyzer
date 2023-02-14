@@ -83,20 +83,16 @@ $app->post('/urls/{url_id}/checks', function ($request, $response, array $args) 
         $this->get('flash')->addMessage('failure', 'Произошла ошибка при проверке, не удалось подключиться');
     }
     $document = new Document($checkedUrl, true);
-    if ($document->has('h1')) {
-        $h1 = $document->first('h1');
-        if ($h1 !== null) {
-            $check['h1'] = $h1->text();
-        }
+    $h1 = optional($document->first('h1'));
+    if ($h1 !== null) {
+        $check['h1'] = $h1->text();
     }
-    if ($document->has('title')) {
-        $title = $document->first('title');
-        if ($title !== null) {
-            $check['title'] = $title->text();
-        }
+    $title = optional($document->first('title'));
+    if ($title !== null) {
+        $check['title'] = $title->text();
     }
-    if ($document->has('meta[name=description]')) {
-        $desc = $document->first('meta[name=description]');
+    $desc = optional($document->first('meta[name=description]'));
+    if ($desc !== null) {
         $check['description'] = $desc->getAttribute('content');
     }
     if (isset($check['status_code'])) {
