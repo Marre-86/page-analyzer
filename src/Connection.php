@@ -5,7 +5,7 @@ namespace Hexlet\Code;
 /**
  * Создание класса Connection
  */
-class Connection
+final class Connection
 {
     /**
      * Connection
@@ -20,7 +20,7 @@ class Connection
      */
     public function connect()
     {
-        if (getenv('DATABASE_URL')) {
+          if (getenv('DATABASE_URL')) {
             $databaseUrl = parse_url(getenv('DATABASE_URL'));
         }
         if (isset($databaseUrl['host'])) {       // необходимо проверять произвольное поле,
@@ -57,7 +57,7 @@ class Connection
     public static function get()
     {
         if (null === static::$conn) {
-            static::$conn = new static();
+            static::$conn = new self();
         }
 
         return static::$conn;
