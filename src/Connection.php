@@ -11,7 +11,7 @@ final class Connection
      * Connection
      * тип @var
      */
-    private static $conn;
+    private static ?Connection $conn = null;
 
     /**
      * Подключение к базе данных и возврат экземпляра объекта \PDO
