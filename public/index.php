@@ -58,7 +58,10 @@ $container->set('flash', function () {
     return new \Slim\Flash\Messages();
 });
 
-$app = AppFactory::setContainer($container);
+if (AppFactory::setContainer($container)) {        // для PhpStan нужно в if завернуть
+    $app = AppFactory::setContainer($container);
+}
+
 $app = AppFactory::create();
 
 $app->addErrorMiddleware(true, true, true);
