@@ -20,7 +20,7 @@ final class Connection
      */
     public function connect()
     {
-          if (getenv('DATABASE_URL')) {
+        if (getenv('DATABASE_URL')) {
             $databaseUrl = parse_url(getenv('DATABASE_URL'));
         }
         if (isset($databaseUrl['host'])) {       // необходимо проверять произвольное поле,
