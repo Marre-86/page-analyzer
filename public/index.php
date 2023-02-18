@@ -58,8 +58,7 @@ $container->set('flash', function () {
     return new \Slim\Flash\Messages();
 });
 
-$app = AppFactory::setContainer($container);
-$app = AppFactory::create();
+$app = AppFactory::createFromContainer($container);
 
 $app->addErrorMiddleware(true, true, true);
 
